@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://bdxethfyftku0"]
+[gd_scene load_steps=17 format=3 uid="uid://bdxethfyftku0"]
 
 [ext_resource type="PackedScene" uid="uid://b6ret3mx3jox1" path="res://characters/PlayerCharacter.tscn" id="1_rd5em"]
 [ext_resource type="Texture2D" uid="uid://b5tx0ahhv8wa5" path="res://master-ast/SL-BP/Tilesets/Grass.png" id="2_nkai5"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://cjxiujp5vbg88" path="res://master-ast/SL-BP/Tilesets/Water.png" id="5_kvqrb"]
 [ext_resource type="Texture2D" uid="uid://du4nn6ex3amb4" path="res://master-ast/SL-BP/Tilesets/Wooden House.png" id="6_fkoek"]
 [ext_resource type="Texture2D" uid="uid://cilgwg47oe6w7" path="res://master-ast/room-tile-set.png" id="7_tn48a"]
+[ext_resource type="Script" path="res://Maps/RoomWFC.cs" id="8_c2t7g"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_qumea"]
 texture = ExtResource("2_nkai5")
@@ -267,6 +268,8 @@ layer_0/tile_data = PackedInt32Array(0, 131072, 4, 65536, 131072, 4, 131072, 131
 z_index = -2
 tile_set = SubResource("TileSet_jx6h8")
 format = 2
+script = ExtResource("8_c2t7g")
 
 [node name="PlayerCam" type="Camera2D" parent="."]
 position = Vector2(115, 82)
+zoom = Vector2(0.5, 0.5)

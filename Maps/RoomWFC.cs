@@ -1,56 +1,101 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.Common;
-
-public enum Connector {
-    Empty,
-    Wall,
-    WallFlipped,
-    Floor
-}
+using System.Linq;
+using System.Runtime.InteropServices;
 
 public record Tile() {
     public string TId {get; init;}
-    public Connector Up {get; init;}
-    public Connector Right {get; init;}
-    public Connector Down {get; init;}
-    public Connector Left {get; init;}
+    public int[] UniqueRotations {get; init;}
+    public int Up {get; init;}
+    public int Right {get; init;}
+    public int Down {get; init;}
+    public int Left {get; init;}
 }
+
+
 
 public partial class RoomWFC : TileMap
 {
-    Tile Corner = new() { 
-        TId = "00", 
-        Up = Connector.Empty, 
-        Right = Connector.WallFlipped,
-        Down = Connector.Wall,
-        Left = Connector.Empty};
-    
-    Tile Wall = new() { 
-        TId = "01", 
-        Up = Connector.Empty, 
-        Right = Connector.WallFlipped,
-        Down = Connector.Floor,
-        Left = Connector.Wall};
-    
-    Tile Floor = new() { 
-        TId = "11", 
-        Up = Connector.Floor, 
-        Right = Connector.Floor,
-        Down = Connector.Floor,
-        Left = Connector.Floor};
+    private static Tile RotateTile(int rotations, Tile tile) {
+        Tile result = new() {
+            TId = tile.TId,
+            UniqueRotations = tile.UniqueRotations,
+            Up = tile.Up,
+            Right = tile.Right,
+            Down = tile.Down,
+            Left = tile.Left
+        };
 
-    Tile Blank = new() { 
-        TId = "10", 
-        Up = Connector.Empty, 
-        Right = Connector.Empty,
-        Down = Connector.Empty,
-        Left = Connector.Empty};
+        for (int i = 0; i < rotations; i++) {
+            result = Rotate90(result);
+        }
 
-    int TileSize = 10;
-    int width = 2;
-    int height = 2;
+
+        return result;
+    }
+
+    private static Tile Rotate90(Tile tile) {
+        return new Tile() {
+            TId = tile.TId,
+            UniqueRotations = tile.UniqueRotations,
+            Up = tile.Left,
+            Right = tile.Up,
+            Down = tile.Right,
+            Left = tile.Down
+        };
+    }
+
+    private static Tile[] gen_variants(Tile[] unique) {
+        List<Tile> variants = new List<Tile>();
+        foreach (Tile tile in unique) {
+            for (int i = 0; i < tile.UniqueRotations.Length; i++) {
+                variants.Add(RotateTile(tile.UniqueRotations[i], tile));
+            }
+        }
+        return variants.ToArray();
+    }
+    
+    private static Tile[] uniqueTiles = {
+        new() {
+            TId = "00",
+            UniqueRotations = new int[] {0, 1, 2, 3},
+            Up = 10,
+            Right = 2,
+            Down = -2,
+            Left = 10},
+        new() {
+            TId = "01",
+            UniqueRotations = new int[] {0, 1, 2, 3},
+            Up = 10,
+            Right = 2,
+            Down = 20,
+            Left = -2},
+        new() {
+            TId = "11",
+            UniqueRotations = new int[] {0},
+            Up = 20,
+            Right = 20,
+            Down = 20,
+            Left = 20
+        },
+        new() {
+            TId = "10",
+            UniqueRotations = new int[] {0},
+            Up = 10,
+            Right = 10,
+            Down = 10,
+            Left = 10
+        }
+    };
+
+    Tile[] allVariantTiles = gen_variants(uniqueTiles);
+
+
+    int width = 3;
+    int height = 3;
     CharacterBody2D Player;
 
     public override void _Ready()
@@ -66,9 +111,9 @@ public partial class RoomWFC : TileMap
 
     private void GenerateChunk(Vector2 pos) {
         Vector2I coords = LocalToMap(pos);
-        for (int w = 0; w < width*TileSize; w++) {
-            for (int h = 0; h < height*TileSize; h++) {
-                SetCell(0, new Vector2I(coords.X-width/2*TileSize + w, coords.Y-height/2*TileSize + h), 0, new Vector2I(1,1));
+        for (int w = 0; w < width; w++) {
+            for (int h = 0; h < height; h++) {
+                SetCell(0, new Vector2I(coords.X-width/2 + w, coords.Y-height/2 + h), 0, new Vector2I(1,1));
             }
         }
     }

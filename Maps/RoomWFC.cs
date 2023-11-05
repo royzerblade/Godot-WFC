@@ -1,96 +1,9 @@
 using Godot;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data.Common;
-using System.Linq;
-using System.Runtime.InteropServices;
-
-public record Tile() {
-    public string TId {get; init;}
-    public int[] UniqueRotations {get; init;}
-    public int Up {get; init;}
-    public int Right {get; init;}
-    public int Down {get; init;}
-    public int Left {get; init;}
-}
-
-
+using static TileVarGen;
 
 public partial class RoomWFC : TileMap
 {
-    private static Tile RotateTile(int rotations, Tile tile) {
-        Tile result = new() {
-            TId = tile.TId,
-            UniqueRotations = tile.UniqueRotations,
-            Up = tile.Up,
-            Right = tile.Right,
-            Down = tile.Down,
-            Left = tile.Left
-        };
-
-        for (int i = 0; i < rotations; i++) {
-            result = Rotate90(result);
-        }
-
-
-        return result;
-    }
-
-    private static Tile Rotate90(Tile tile) {
-        return new Tile() {
-            TId = tile.TId,
-            UniqueRotations = tile.UniqueRotations,
-            Up = tile.Left,
-            Right = tile.Up,
-            Down = tile.Right,
-            Left = tile.Down
-        };
-    }
-
-    private static Tile[] gen_variants(Tile[] unique) {
-        List<Tile> variants = new List<Tile>();
-        foreach (Tile tile in unique) {
-            for (int i = 0; i < tile.UniqueRotations.Length; i++) {
-                variants.Add(RotateTile(tile.UniqueRotations[i], tile));
-            }
-        }
-        return variants.ToArray();
-    }
-    
-    private static Tile[] uniqueTiles = {
-        new() {
-            TId = "00",
-            UniqueRotations = new int[] {0, 1, 2, 3},
-            Up = 10,
-            Right = 2,
-            Down = -2,
-            Left = 10},
-        new() {
-            TId = "01",
-            UniqueRotations = new int[] {0, 1, 2, 3},
-            Up = 10,
-            Right = 2,
-            Down = 20,
-            Left = -2},
-        new() {
-            TId = "11",
-            UniqueRotations = new int[] {0},
-            Up = 20,
-            Right = 20,
-            Down = 20,
-            Left = 20
-        },
-        new() {
-            TId = "10",
-            UniqueRotations = new int[] {0},
-            Up = 10,
-            Right = 10,
-            Down = 10,
-            Left = 10
-        }
-    };
-
+    private static Tile[] uniqueTiles = TileInitData.uniqueTiles;
     Tile[] allVariantTiles = gen_variants(uniqueTiles);
 
 

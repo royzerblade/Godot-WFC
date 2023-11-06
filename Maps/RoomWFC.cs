@@ -1,10 +1,11 @@
+using System;
 using Godot;
 using static TileVarGen;
 
 public partial class RoomWFC : TileMap
 {
     private static Tile[] uniqueTiles = TileInitData.uniqueTiles;
-    Tile[] allVariantTiles = gen_variants(uniqueTiles);
+    private static Tile[] allVariantTiles = gen_variants(uniqueTiles);
 
 
     int width = 3;
@@ -24,9 +25,21 @@ public partial class RoomWFC : TileMap
 
     private void GenerateChunk(Vector2 pos) {
         Vector2I coords = LocalToMap(pos);
+        var rand = new Random();
         for (int w = 0; w < width; w++) {
             for (int h = 0; h < height; h++) {
-                SetCell(0, new Vector2I(coords.X-width/2 + w, coords.Y-height/2 + h), 0, new Vector2I(0,0), 1);
+                Tile selectedTile = allVariantTiles[rand.Next(allVariantTiles.Length - 1)];
+                int[] tileSetData = Parser.parseTileId(selectedTile.TId);
+                TileData currentRender = GetCellTileData(0, new Vector2I(coords.X-width/2 + w, coords.Y-height/2 + h));
+                bool isNull = object.Equals(currentRender.GetCustomData("tile_set"), null);
+                int custData = isNull ? 0 : (int)currentRender.GetCustomData("tile_set");
+                if (custData == 1) {
+                    SetCell(0,
+                            new Vector2I(coords.X-width/2 + w, coords.Y-height/2 + h),
+                            0,
+                            new Vector2I(tileSetData[0], tileSetData[1]),
+                            tileSetData[2]);
+                }
             }
         }
     }

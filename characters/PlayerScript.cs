@@ -15,7 +15,6 @@ public partial class PlayerScript : CharacterBody2D
  	{
 		_animationTree = GetNode<AnimationTree>("PCAnimationTree");
 		StateMachine = _animationTree.Get("parameters/playback").As<AnimationNodeStateMachinePlayback>();
-     	
 		Update_animation_params(Starting_Direction);
  	}
 

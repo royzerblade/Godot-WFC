@@ -26,7 +26,7 @@ public partial class RoomWFC : TileMap
         Vector2I coords = LocalToMap(pos);
         for (int w = 0; w < width; w++) {
             for (int h = 0; h < height; h++) {
-                SetCell(0, new Vector2I(coords.X-width/2 + w, coords.Y-height/2 + h), 0, new Vector2I(1,1));
+                SetCell(0, new Vector2I(coords.X-width/2 + w, coords.Y-height/2 + h), 0, new Vector2I(0,0), 1);
             }
         }
     }

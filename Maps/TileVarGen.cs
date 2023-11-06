@@ -1,9 +1,10 @@
+using System;
 using System.Collections.Generic;
 
 public class TileVarGen {
     private static Tile RotateTile(int rotations, Tile tile) {
         Tile result = new() {
-            TId = tile.TId,
+            TId = tile.TId + $"-{rotations + 1}",
             UniqueRotations = tile.UniqueRotations,
             Up = tile.Up,
             Right = tile.Right,

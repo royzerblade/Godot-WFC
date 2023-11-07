@@ -5,7 +5,7 @@ using static TileVarGen;
 public partial class RoomWFC : TileMap
 {
     private static Tile[] uniqueTiles = TileInitData.uniqueTiles;
-    private static Tile[] allVariantTiles = gen_variants(uniqueTiles);
+    private static Tile[] allVariantTiles = GenVariants(uniqueTiles);
 
 
     int width = 3;
@@ -28,12 +28,11 @@ public partial class RoomWFC : TileMap
         var rand = new Random();
         for (int w = 0; w < width; w++) {
             for (int h = 0; h < height; h++) {
+
                 Tile selectedTile = allVariantTiles[rand.Next(allVariantTiles.Length - 1)];
                 int[] tileSetData = Parser.parseTileId(selectedTile.TId);
-                TileData currentRender = GetCellTileData(0, new Vector2I(coords.X-width/2 + w, coords.Y-height/2 + h));
-                bool isNull = object.Equals(currentRender.GetCustomData("tile_set"), null);
-                int custData = isNull ? 0 : (int)currentRender.GetCustomData("tile_set");
-                if (custData == 1) {
+                var currentRender = GetCellTileData(0, new Vector2I(coords.X-width/2 + w, coords.Y-height/2 + h)) ?? null;
+                if (currentRender is null) {
                     SetCell(0,
                             new Vector2I(coords.X-width/2 + w, coords.Y-height/2 + h),
                             0,

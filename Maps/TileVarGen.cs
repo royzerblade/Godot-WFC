@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class TileVarGen {
     private static Tile RotateTile(int rotations, Tile tile) {
         Tile result = new() {
-            TId = tile.TId + $"-{rotations + 1}",
+            TId = tile.TId + $"-{rotations}",
             UniqueRotations = tile.UniqueRotations,
             Up = tile.Up,
             Right = tile.Right,
@@ -28,7 +28,7 @@ public class TileVarGen {
         };
     }
 
-    public static Tile[] gen_variants(Tile[] unique) {
+    public static Tile[] GenVariants(Tile[] unique) {
         List<Tile> variants = new List<Tile>();
         foreach (Tile tile in unique) {
             for (int i = 0; i < tile.UniqueRotations.Length; i++) {

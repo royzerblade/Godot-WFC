@@ -30,7 +30,7 @@ public partial class RoomWFC : TileMap
             for (int h = 0; h < height; h++) {
 
                 Tile selectedTile = allVariantTiles[rand.Next(allVariantTiles.Length - 1)];
-                int[] tileSetData = Parser.parseTileId(selectedTile.TId);
+                int[] tileSetData = Parser.ParseTileId(selectedTile.TId);
                 var currentRender = GetCellTileData(0, new Vector2I(coords.X-width/2 + w, coords.Y-height/2 + h)) ?? null;
                 if (currentRender is null) {
                     SetCell(0,

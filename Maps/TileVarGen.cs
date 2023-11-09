@@ -29,7 +29,7 @@ public class TileVarGen {
     }
 
     public static Tile[] GenVariants(Tile[] unique) {
-        List<Tile> variants = new List<Tile>();
+        List<Tile> variants = new();
         foreach (Tile tile in unique) {
             for (int i = 0; i < tile.UniqueRotations.Length; i++) {
                 variants.Add(RotateTile(tile.UniqueRotations[i], tile));

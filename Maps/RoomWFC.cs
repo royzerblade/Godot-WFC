@@ -4,6 +4,7 @@ using static TileVarGen;
 
 public partial class RoomWFC : TileMap
 {
+    // TODO: make a generic way to choose between tilesets on load
     private static Tile[] uniqueTiles = TileInitData.uniqueTiles;
     private static Tile[] allVariantTiles = GenVariants(uniqueTiles);
 
@@ -21,6 +22,23 @@ public partial class RoomWFC : TileMap
     {
         Vector2 pos = Player.Get("position").As<Vector2>();
         GenerateChunk(pos);
+    }
+
+    public override void _Input(InputEvent @event)
+    {
+
+        if (@event is InputEventKey eventKeyPress
+            && !eventKeyPress.IsEcho()
+            && eventKeyPress.Keycode == Key.E
+            && eventKeyPress.Pressed == true) {
+                Vector2I mousePosition = LocalToMap(ToLocal(GetGlobalMousePosition()));
+                PopupMenu selectTile = GetNode<PopupMenu>("ChooseTilePopup");
+                SetCell(0,
+                        new Vector2I(mousePosition.X, mousePosition.Y),
+                        0,
+                        new Vector2I(1, 1),
+                        0);
+        }
     }
 
     private void GenerateChunk(Vector2 pos) {

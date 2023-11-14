@@ -1,5 +1,8 @@
-[gd_scene format=3 uid="uid://bqwhutfuyd8ef"]
+[gd_scene load_steps=2 format=3 uid="uid://bqwhutfuyd8ef"]
+
+[ext_resource type="Script" path="res://Menus/ChooseTilePopup.cs" id="1_5ty8o"]
 
 [node name="ChooseTilePopup" type="PopupMenu"]
 initial_position = 5
 visible = true
+script = ExtResource("1_5ty8o")
